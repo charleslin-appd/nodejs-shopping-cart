@@ -1,3 +1,14 @@
+var appd = require("appdynamics").profile({
+  controllerHostName: 'se-lab.saas.appdynamics.com',
+  controllerPort: 443, 
+  controllerSslEnabled: true,  // Set to true if controllerPort is SSL
+  accountName: 'se-lab',
+  // accountAccessKey: 'secret_key', // set in environment variable APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+  applicationName: 'cjl_node_shopping_cart',
+  tierName: 'express', 
+  nodeName: 'node1' 
+ });
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');

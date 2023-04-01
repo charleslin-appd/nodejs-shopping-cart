@@ -1,3 +1,4 @@
+var appd = require("appdynamics");                    // same appd object as defined in app.js
 var express = require('express');
 var router = express.Router();
 
@@ -16,7 +17,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/add/:id', function(req, res, next) {
+
+  var trx = appd.startTransaction('add_to_cart');     // mark start of appdynamics bt
+  const {execSync} = require('child_process');        // add some delays
+  execSync('sleep 0.1')
+
   var productId = req.params.id;
+  trx.addSnapshotData('productId', productId);        // collect some custom data
   var cart = new Cart(req.session.cart ? req.session.cart : {});
   var product = products.filter(function(item) {
     return item.id == productId;
@@ -24,6 +31,7 @@ router.get('/add/:id', function(req, res, next) {
   cart.add(product[0], productId);
   req.session.cart = cart;
   res.redirect('/');
+  trx.end();                                          // mark end of bt
 });
 
 router.get('/cart', function(req, res, next) {
